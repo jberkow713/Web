@@ -6,8 +6,7 @@ def register_event(event, func):
     if handlers==None:
         events[event]=[func]
     else:
-        handlers.append(func)
-       
+        handlers.append(func)       
 
 def dispatch(event,data):
     handlers = events.get(event)

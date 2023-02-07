@@ -28,21 +28,30 @@ def share_password(*args):
     friend = args[0]
     print(f'Sharing password {password} with {friend}')
 
-register_event('register_user', create_user)
-register_event('register_user', function_2)
-register_event('share_info', share_password)
+def function_3(*args):
+    print(f'{args[0]}:{args[1]} has been added to user database')
 
-# Dispatch calls the Dictionary and all functions in it, and runs the individual functions, with the given
-# Arguments, so in this case, 'register user' has 2 functions associated with it, and both are run 
-# with the arguments passed to build_users
-def build_users(*args):
-    dispatch('register_user', args)
+class Register:
+    def __init__(self, event, funcs):
+        self.event = event
+        self.funcs = funcs
+    def register(self):
+        for func in self.funcs:
+            register_event(self.event,func)
+    def add(self, func):
+        self.funcs.append(func)
+    def dispatch(self,  *args):
+        dispatch(self.event,*args)
+        
+H = Register('register_user', [create_user,function_2])
+H.add(function_3)
+H.register()
+H.dispatch(['John', 'Doe', 'extra_1', 'extra_2'])
 
-def share_info(*args):
-    dispatch('share_info', args )   
+H2 = Register('share_info', [share_password])
+H2.register()
+H2.dispatch(['Peter', 'password'])
 
 
-build_users('John', 'Doe', 'extra_1', 'extra_2')
-share_info('Peter', 'password')
 
  
