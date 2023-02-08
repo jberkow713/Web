@@ -59,17 +59,17 @@ class Lock(object):
 def Simulation():
          
     # Required objects
-    godrejLockObj = Lock()
+    LockObj = Lock()
     PoliceObj = Police(911)
     ownerObj = Owner(99999999)
     AlarmObj = Alarm()
      
     # Setting these objects to receive the events from lock
-    godrejLockObj.AddEvent(PoliceObj.Call_Police)
-    godrejLockObj.AddEvent(ownerObj.Message)
-    godrejLockObj.AddEvent(AlarmObj.Start_Alarm)
+    LockObj.AddEvent(PoliceObj.Call_Police)
+    LockObj.AddEvent(ownerObj.Message)
+    LockObj.AddEvent(AlarmObj.Start_Alarm)
     
-    godrejLockObj.LockBroken()       
-    godrejLockObj.RemoveEvent(AlarmObj.Start_Alarm)
+    LockObj.LockBroken()       
+    LockObj.RemoveEvent(AlarmObj.Start_Alarm)
 
 Simulation()    
