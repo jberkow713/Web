@@ -22,7 +22,7 @@ class Police:
      
     def Call_Police(self,*args):
         num = [x for x in args if type(x)==int ]
-        print (f"police have been informed {num[0]} times")
+        print (f"{self.phone} has been called, police have been informed {num[0]} times")
  
 class Owner:
     def __init__(self, phone):
@@ -31,7 +31,7 @@ class Owner:
     def Message(self,*args):
         name = [x for x in args if type(x)==str and x.isalpha()==True]
         
-        print (f"{name[0]} has been messaged about the possible theft")
+        print (f"We are calling {self.phone}, is this {name[0]}? There has been a possible theft")
          
 class Alarm:
      
