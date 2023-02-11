@@ -18,7 +18,7 @@ d = {
     "count": 1,
     "limit": 1,
     "offset": 0,
-    "pages": [{'k':1, 'v':[1,2,3,[4,5,[6,[8]]]], 'f':{'f':[1,2,3,4,5,[3,4]]}}]
+    "pages": [{'k':1,'g':{}, 'v':[1,2,3,[4,5,[6,[8]]]], 'f':{'f':[1,2,3,4,5,[3,4]]}}]
   }
 }
 
@@ -67,7 +67,7 @@ def flatten_list(List):
         if isinstance(val, list):
             output = flatten_list(val)
             for x in output:
-                L.append(x)
+                L.append(x)              
         else:
             L.append(val)
     return L
@@ -105,9 +105,50 @@ d3 = {
     "count": 1,
     "limit": 1,
     "offset": 0,
-    "pages": [{'k':1, 'v':[1,2,3,[4,5,[6,[8]]]]}]
+    "pages": [{'k':1, 'v':[1,2,3,[4,5,{},[6,{'f':2},[8]]]]}]
   }
 
-print(flatten_dict(d))
+d4 = {'f':[2], 'G':{'k':{'f':{'j':{'i':[1,2,3]}}}}}  
+
+def flatten_dict_2(Dict, sep=''):
+    Final = {}
+
+    for k,v in Dict.items():
+        key = sep+k 
+        if isinstance(v,dict):
+            output = flatten_dict(v, key + '.')
+            if output == {}:
+                Final[key]={}
+            else:
+                Final.update(output)
+        elif isinstance(v,list):
+            val = flatten_list(v)
+            
+            for x in val:
+                if x == {}:
+                    Final[key+'E']=x
+                    val.remove(x)
+                else:
+
+                    if type(x)==dict:
+                        if x == {}:
+                            Final[key]=={}
+                        output = flatten_dict_2(x, key + '.')
+                        
+                        Final.update(output)
+                        val.remove(x)
+            Final[key]=val        
+        else:
+            Final[key]=v
+    keys = []
+    for k,v in Final.items():
+        if v == []:
+            keys.append(k)
+    for x in keys:
+        del Final[x]
+
+    return Final
+
+print(flatten_dict_2(d3))                         
 
 
