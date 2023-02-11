@@ -129,10 +129,8 @@ def flatten_dict_2(Dict, sep=''):
                     Final[key+'E']=x
                     val.remove(x)
                 else:
-
                     if type(x)==dict:
-                        if x == {}:
-                            Final[key]=={}
+                        
                         output = flatten_dict_2(x, key + '.')
                         
                         Final.update(output)
