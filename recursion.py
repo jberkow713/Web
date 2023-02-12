@@ -72,81 +72,36 @@ def flatten_list(List):
             L.append(val)
     return L
 
-def flatten_dict(Dict, sep=''):
+             
+
+def flatten_dict_3(Dict, sep=''):
     Final = {}
 
     for k,v in Dict.items():
-        key = sep+k 
+        key = sep+str(k) 
         if isinstance(v,dict):
-            output = flatten_dict(v, key + '.')
-            if output == {}:
-                Final[key]={}
-            else:
+            if len(v)>0:                
+                output = flatten_dict_3(v, key + '.')
                 Final.update(output)
-
-        elif isinstance(v,list):
-            v = flatten_list(v)
-            l = len(v)
-            count = 0
-            for x in v:
-                if type(x)==dict:
-                    count +=1
-            if count == 0:                
-                Final[key]=v
-                
-            for i in v:                               
-                if isinstance(i, dict):                   
-                    Final.update(flatten_dict(i,key+'.'))
-        else:
-            Final[key]=v
-    return Final             
-
-d3 = {
-    "count": 1,
-    "limit": 1,
-    "offset": 0,
-    "pages": [{'k':1, 'v':[1,2,3,[4,5,{},[6,{'f':2},[8]]]]}]
-  }
-
-d4 = {'f':[2], 'G':{'k':{'f':{'j':{'i':[1,2,3]}}}}}  
-
-def flatten_dict_2(Dict, sep=''):
-    Final = {}
-
-    for k,v in Dict.items():
-        key = sep+k 
-        if isinstance(v,dict):
-            output = flatten_dict(v, key + '.')
-            if output == {}:
-                Final[key]={}
-            else:
-                Final.update(output)
-        elif isinstance(v,list):
-            val = flatten_list(v)
-            
-            for x in val:
-                if x == {}:
-                    Final[key+'E']=x
-                    val.remove(x)
-                else:
-                    if type(x)==dict:
-                        
-                        output = flatten_dict_2(x, key + '.')
-                        
+            else:                
+                Final[key]={}                
+        if isinstance(v,list):
+            new = list(enumerate(flatten_list(v)))
+            for idx, val in new:
+                k = key + '.' + str(idx)
+                if type(val)!=dict:
+                    Final[k]=val
+                if type(val)==dict:
+                    output = flatten_dict_3(val, k + '.')
+                    if output == {}:
+                        Final[k]=output
+                    else:
                         Final.update(output)
-                        val.remove(x)
-            Final[key]=val        
-        else:
-            Final[key]=v
-    keys = []
-    for k,v in Final.items():
-        if v == []:
-            keys.append(k)
-    for x in keys:
-        del Final[x]
+
+        elif type(v)==int or type(v)==str or type(v)==tuple:
+            Final[key]=v 
 
     return Final
-
-print(flatten_dict_2(d3))                         
-
-
+# 'L':[4,5,{}]
+d5 = {'k': {}, 'j':2, 'f':{1:{}}, 'L':[4,5,{'f':3},(3,4)]}
+print(flatten_dict_3(d5))
