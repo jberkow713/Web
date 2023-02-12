@@ -72,23 +72,23 @@ def flatten_list(List):
             L.append(val)
     return L             
 
-def flatten_dict(Dict, sep=''):
+def flatten_dict(Dict, prefix='', div='_'):
     Final = {}
     for k,v in Dict.items():
-        key = sep+str(k) 
+        key = prefix+str(k) 
         if isinstance(v,dict):
             if len(v)>0:                
-                Final.update(flatten_dict(v, key + '.'))
+                Final.update(flatten_dict(v, key + div))
             else:                
                 Final[key]={}                
         if isinstance(v,list):
             new = list(enumerate(flatten_list(v)))
             for idx, val in new:
-                k = key + '.' + str(idx)
+                k = key + div + str(idx)
                 if type(val)!=dict:
                     Final[k]=val
                 if type(val)==dict:                   
-                    Final.update(flatten_dict(val, k + '.'))                    
+                    Final.update(flatten_dict(val, k + div))                    
         elif type(v)==int or type(v)==str or type(v)==tuple:
             Final[key]=v 
 
