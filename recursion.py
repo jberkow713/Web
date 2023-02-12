@@ -70,9 +70,7 @@ def flatten_list(List):
                 L.append(x)              
         else:
             L.append(val)
-    return L
-
-             
+    return L             
 
 def flatten_dict(Dict, sep=''):
     Final = {}
@@ -89,16 +87,12 @@ def flatten_dict(Dict, sep=''):
                 k = key + '.' + str(idx)
                 if type(val)!=dict:
                     Final[k]=val
-                if type(val)==dict:
-                    if len(val)>0:
-                        output = flatten_dict(val, k + '.')
-                        Final.update(output)                        
-                    else:
-                        Final[k]={}
+                if type(val)==dict:                   
+                    Final.update(flatten_dict(val, k + '.'))                    
         elif type(v)==int or type(v)==str or type(v)==tuple:
             Final[key]=v 
 
     return Final
-# 'L':[4,5,{}]
-d5 = {'k': {}, 'j':2, 'f':{1:{}}, 'L':[4,5,{'f':3, 'h':{'h':[4,3,4,5]}},(3,4)]}
-print(flatten_dict(d5))
+
+d5 = {'k': {}, 'j':2, 'f':{1:{}}, 'L':[4,5,{'f':3, 'h':{'h':[4,3,4,5,{}]}},(3,4)]}
+print(flatten_dict(d2))
