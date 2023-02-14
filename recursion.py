@@ -73,11 +73,10 @@ def flatten_list(List):
     return L
      
 def flatten(D, sep='', count=0,div='.'):
-    # in the edge case that an empty dictionary is passed to the function to start
-    if count ==0:
-        if D == {}:
-            return D
-    # in all other cases
+    # edge case, empty dict passed at start
+    if sep=='' and D == {}:
+        return D
+    
     Final = {}
 
     if D == {}:
@@ -87,7 +86,7 @@ def flatten(D, sep='', count=0,div='.'):
     for k,v in D.items():
         key = sep + str(k) 
         if isinstance(v,dict):                      
-            Final.update(flatten(v,key + div,count=count+1))
+            Final.update(flatten(v,key + div))
                                          
         elif isinstance(v,list):
             if v == []:
@@ -97,11 +96,12 @@ def flatten(D, sep='', count=0,div='.'):
             for idx,val in full:
                 k = key + div + str(idx) 
                 if isinstance(val,dict):                   
-                    Final.update(flatten(val, k+div, count=count+1))                     
+                    Final.update(flatten(val, k+div))                     
                 else:
                     Final[k]=val        
         else:
-            Final[key]=v        
+            Final[key]=v
+
     return Final                               
 
 people = {1: {'Name': 'John', 'Age': '27', 'Sex': 'Male'},
@@ -115,7 +115,7 @@ with open("mydata.json", "r") as read_file:
 d5 = {'k': {}, 'j':2, 'f':{1:{}}, 'L':[4,5,[4,3,4,5,{}],(3,4)]}
 print(flatten({'k':[1,2,[3,4,[5,{'j':{'h':[1,2,3,{'f':[(3,4),2,3]}]}},6]]], 3:{}}))
 print(flatten(d5))
-d6 = {}
+d6 = {1:[{}]}
 print(flatten(d6))
 
 
