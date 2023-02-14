@@ -67,31 +67,38 @@ def flatten_list(List):
         if isinstance(val, list):
             output = flatten_list(val)
             for x in output:
-                L.append(x)              
+                L.append(x)                
         else:
             L.append(val)
     return L             
 
-def flatten_dict(Dict, prefix='', div='.'):
-    Final = {}
-    for k,v in Dict.items():
-        key = prefix+str(k) 
-        if isinstance(v,dict):
-            if len(v)>0:                
-                Final.update(flatten_dict(v, key + div))
-            else:                
-                Final[key]={}                
-        if isinstance(v,list):
-            new = list(enumerate(flatten_list(v)))
-            for idx, val in new:
-                k = key + div + str(idx)
-                if type(val)!=dict:
-                    Final[k]=val
-                if type(val)==dict:                   
-                    Final.update(flatten_dict(val, k + div))               
-        elif type(v)!=dict:
-            Final[key]=v
-    return Final
+d5 = {'k': {}, 'j':2, 'f':{1:{}}, 'L':[4,5,[4,3,4,5,{}],(3,4)]}
 
-d5 = {'k': {}, 'j':2, 'f':{1:{}}, 'L':[4,5,{'f':3, 'h':{'h':[4,3,4,5,{}]}},(3,4)]}
-print(flatten_dict(d2))
+def flatten(D, sep='', div='.'):
+    Final = {}
+    
+    if D == {}:        
+        return {sep:D}         
+    
+    for k,v in D.items():
+        key = sep + str(k) 
+        if isinstance(v,dict):            
+            Final.update(flatten(v,key + div))
+                                         
+        if isinstance(v,list):            
+            full = list(enumerate(flatten_list(v)))                        
+            for idx,val in full:
+                k = key + div + str(idx) 
+                if not isinstance(val,dict):                    
+                    Final[k]=val                  
+                if isinstance(val,dict):                   
+                    Final.update(flatten(val, k+div))                     
+
+        elif type(v)!=list and type(v)!=dict:
+            Final[key]=v        
+    return Final                               
+
+print(flatten({'k':[1,2,[3,4,[5,{},6]]], 3:{}}))
+print(flatten(d))
+
+
