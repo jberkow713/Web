@@ -85,8 +85,11 @@ def flatten(D, sep='', div='.'):
         if isinstance(v,dict):            
             Final.update(flatten(v,key + div))
                                          
-        if isinstance(v,list):            
-            full = list(enumerate(flatten_list(v)))                        
+        if isinstance(v,list):
+            if v == []:
+                Final[key]=v
+
+            full = list(enumerate(flatten_list(v)))
             for idx,val in full:
                 k = key + div + str(idx) 
                 if not isinstance(val,dict):                    
@@ -98,7 +101,7 @@ def flatten(D, sep='', div='.'):
             Final[key]=v        
     return Final                               
 
-print(flatten({'k':[1,2,[3,4,[5,{},6]]], 3:{}}))
-print(flatten(d))
+print(flatten({'k':[1,2,[3,4,[5,{'j':{'h':[1,2,3,{'f':[]}]}},6]]], 3:{}}))
+
 
 
