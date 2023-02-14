@@ -78,12 +78,12 @@ def flatten(D, sep='', div='.'):
     Final = {}
     
     if D == {}:
-        Final[sep]=D
+        Final[sep[:-1]]=D
         return Final              
     
     for k,v in D.items():
         key = sep + str(k) 
-        if isinstance(v,dict):            
+        if isinstance(v,dict):                      
             Final.update(flatten(v,key + div))
                                          
         elif isinstance(v,list):
@@ -111,7 +111,8 @@ with open("mydata.json", "r") as read_file:
     developer = json.load(read_file)
 
 print(flatten({'k':[1,2,[3,4,[5,{'j':{'h':[1,2,3,{'f':[(3,4),2,3]}]}},6]]], 3:{}}))
-print(flatten(developer))
+print(flatten(d5))
+
 
 
 
