@@ -1,4 +1,4 @@
-
+import json
 
 d = {
   "items": [
@@ -100,8 +100,17 @@ def flatten(D, sep='', div='.'):
         elif type(v)!=list and type(v)!=dict:
             Final[key]=v        
     return Final                               
+people = {1: {'Name': 'John', 'Age': '27', 'Sex': 'Male'},
+          2: {'Name': 'Marie', 'Age': '22', 'Sex': 'Female'}}
+
+with open('mydata.json', 'w') as f:
+    json.dump(people, f)
+
+with open("mydata.json", "r") as read_file:    
+    developer = json.load(read_file)
 
 print(flatten({'k':[1,2,[3,4,[5,{'j':{'h':[1,2,3,{'f':[(3,4),2,3]}]}},6]]], 3:{}}))
+print(flatten(developer))
 
 
 
