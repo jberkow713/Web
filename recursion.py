@@ -77,15 +77,16 @@ d5 = {'k': {}, 'j':2, 'f':{1:{}}, 'L':[4,5,[4,3,4,5,{}],(3,4)]}
 def flatten(D, sep='', div='.'):
     Final = {}
     
-    if D == {}:        
-        return {sep:D}         
+    if D == {}:
+        Final[sep]=D
+        return Final              
     
     for k,v in D.items():
         key = sep + str(k) 
         if isinstance(v,dict):            
             Final.update(flatten(v,key + div))
                                          
-        if isinstance(v,list):
+        elif isinstance(v,list):
             if v == []:
                 Final[key]=v
 
@@ -95,11 +96,11 @@ def flatten(D, sep='', div='.'):
                 if isinstance(val,dict):                   
                     Final.update(flatten(val, k+div))                     
                 else:
-                    Final[k]=val
-
-        elif type(v)!=list and type(v)!=dict:
+                    Final[k]=val        
+        else:
             Final[key]=v        
     return Final                               
+
 people = {1: {'Name': 'John', 'Age': '27', 'Sex': 'Male'},
           2: {'Name': 'Marie', 'Age': '22', 'Sex': 'Female'}}
 
