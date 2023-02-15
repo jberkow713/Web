@@ -125,8 +125,10 @@ def flatten_dict(D, sep='', div='.'):
 
     d = {}
 
-    if D == {}:        
-        return {sep[:-1]:D} 
+    if D == {}:
+        l = len(div)
+
+        return {sep[:-l]:D} 
 
     for k,v in D.items():
         key = sep+str(k)
