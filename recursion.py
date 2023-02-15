@@ -113,11 +113,35 @@ with open('mydata.json', 'w') as f:
 with open("mydata.json", "r") as read_file:    
     developer = json.load(read_file)
 d5 = {'k': {}, 'j':2, 'f':{1:{}}, 'L':[4,5,[4,3,4,5,{}],(3,4)]}
-print(flatten({'k':[1,2,[3,4,[5,{'j':{'h':[1,2,3,{'f':[(3,4),2,3]}]}},6]]], 3:{}}))
-print(flatten(d5))
-d6 = {1:[{}]}
-print(flatten(d6))
+# print(flatten({'k':[1,2,[3,4,[5,{'j':{'h':[1,2,3,{'f':[(3,4),2,3]}]}},6]]], 3:{}}))
+# print(flatten(d5))
+# d6 = {1:[{}]}
+# print(flatten(d6))
 
 
+def flatten_dict(D, sep='', div='.'):
+    if sep == '' and D == {}:
+        return {}
 
+    d = {}
 
+    if D == {}:        
+        return {sep[:-1]:D} 
+
+    for k,v in D.items():
+        key = sep+str(k)
+        if type(v)==dict:
+            d.update(flatten_dict(v,key+div))
+        elif type(v)==list:
+            e = list(enumerate(flatten_list(v)))
+            for idx,val in e:
+                k = key + div + str(idx)
+                if type(val)==dict:
+                    d.update(flatten_dict(val, k+div))
+                else:
+                    d[k]=val          
+        else:
+            d[key]=v
+    return d
+
+print(flatten_dict(d5))
